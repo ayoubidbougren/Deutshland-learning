@@ -1,0 +1,262 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "SaaS user account profile, active subscription plan, account status, and live study progress summary (without PII).",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the student",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Avatar photo URL from Google profile",
+          "maxLength": 500
+        },
+        "plan": {
+          "type": "string",
+          "description": "Active SaaS subscription tier",
+          "enum": ["free", "goethe_pass", "ausbildung_pro"],
+          "maxLength": 32
+        },
+        "status": {
+          "type": "string",
+          "description": "Account access status controlled by Admin",
+          "enum": ["active", "suspended"],
+          "maxLength": 20
+        },
+        "targetLevel": {
+          "type": "string",
+          "description": "Target German CEFR level",
+          "enum": ["A1", "A2", "B1"],
+          "maxLength": 10
+        },
+        "goal": {
+          "type": "string",
+          "description": "Main study goal in Morocco",
+          "maxLength": 100
+        },
+        "city": {
+          "type": "string",
+          "description": "Student city in Morocco",
+          "maxLength": 80
+        },
+        "currentDay": {
+          "type": "number",
+          "description": "Current day number reached by the student (1-24)"
+        },
+        "currentLesson": {
+          "type": "number",
+          "description": "Current lesson number reached by the student (1-8)"
+        },
+        "currentPage": {
+          "type": "number",
+          "description": "Current textbook page reached by the student"
+        },
+        "completedDaysCount": {
+          "type": "number",
+          "description": "Number of completed course days"
+        },
+        "speakingHistoryCount": {
+          "type": "number",
+          "description": "Total completed live speaking practice sessions"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when account was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when profile or activity was last updated"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "photoURL",
+        "plan",
+        "status",
+        "targetLevel",
+        "goal",
+        "city",
+        "currentDay",
+        "currentLesson",
+        "currentPage",
+        "completedDaysCount",
+        "speakingHistoryCount",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Isolated PII document containing the user's verified email address.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owner",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address from Google Sign-In",
+          "minLength": 3,
+          "maxLength": 254
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when private info was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when private info was last updated"
+        }
+      },
+      "required": ["uid", "email", "createdAt", "updatedAt"]
+    },
+    "CourseProgressDoc": {
+      "title": "CourseProgressDoc",
+      "description": "Cloud-synced learning progress for a specific course book.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the student",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "bookId": {
+          "type": "string",
+          "description": "Course book identifier",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "currentLesson": {
+          "type": "number",
+          "description": "Current lesson number (1-30)"
+        },
+        "currentDay": {
+          "type": "number",
+          "description": "Current day number (1-24)"
+        },
+        "currentPage": {
+          "type": "number",
+          "description": "Current textbook page number"
+        },
+        "completedDays": {
+          "type": "array",
+          "description": "List of completed day numbers (bounded <= 30)"
+        },
+        "completedPages": {
+          "type": "array",
+          "description": "List of completed page numbers (bounded <= 100)"
+        },
+        "speakingHistoryCount": {
+          "type": "number",
+          "description": "Total completed speaking practice sessions"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when progress record was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when progress record was updated"
+        }
+      },
+      "required": [
+        "uid",
+        "bookId",
+        "currentLesson",
+        "currentDay",
+        "currentPage",
+        "completedDays",
+        "completedPages",
+        "speakingHistoryCount",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "PlatformSettings": {
+      "title": "PlatformSettings",
+      "description": "Global SaaS platform configuration managed exclusively by the Admin.",
+      "type": "object",
+      "properties": {
+        "freeModeEnabled": {
+          "type": "boolean",
+          "description": "When true, all lessons and features are unlocked for free for everyone"
+        },
+        "symbolicPriceMad": {
+          "type": "number",
+          "description": "Symbolic subscription price in MAD for Goethe Pass"
+        },
+        "proPriceMad": {
+          "type": "number",
+          "description": "Subscription price in MAD for Ausbildung Pro"
+        },
+        "announcementText": {
+          "type": "string",
+          "description": "Announcement banner message controlled by Admin",
+          "maxLength": 250
+        },
+        "allowNewSignups": {
+          "type": "boolean",
+          "description": "Whether new users can sign up and access the platform immediately"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when platform settings were updated"
+        }
+      },
+      "required": [
+        "freeModeEnabled",
+        "symbolicPriceMad",
+        "proPriceMad",
+        "announcementText",
+        "allowNewSignups",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores SaaS user account profile, plan tier, active/suspended status, and study progress summary."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": "UserPrivateInfo",
+      "description": "Stores isolated PII (email) accessible exclusively by the owner or verified Admin."
+    },
+    "/users/{userId}/progress/{bookId}": {
+      "schema": "CourseProgressDoc",
+      "description": "Stores cloud-synced textbook progress for each user."
+    },
+    "/settings/{settingId}": {
+      "schema": "PlatformSettings",
+      "description": "Stores global platform pricing and free-launch mode settings."
+    }
+  }
+}

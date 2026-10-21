@@ -1,0 +1,10 @@
+{
+  "name": "Deutsch Sprechen & Dialoge",
+  "description": "منصة SaaS الأولى في المغرب لتعلم والتحدث بالألمانية (A1, A2, B1) بالذكاء الاصطناعي، بمرافقة كتاب DaF kompakt neu والشرح بالدارجة لاجتياز امتحانات غوته وعقود الأوسبيلدونغ.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
